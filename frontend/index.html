@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- using html5 "standards" mode. "quirks" mode is the old rule  -->
+<html>
+<script type="text/javascript" src='keys.js'></script>
+
+<head>
+    <title>
+        Simple Map
+    </title>
+    <meta name='viewport' content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <!-- a css contains key, value. In our case, we want to give the following
+    style to html and body -->
+    <!-- This CSS declaration indicates that the map container <div> (with id map)
+     should take up 100% of the height of the HTML body.  -->
+    <!-- When we specify height or width as percentage, its wrt parent. For 
+         width, all block are as wide as parents. But height of a block depends 
+        on its content unless we specify the height explicitly of the parent as well
+    -->
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+        /* hashtag defines the style for one element specified by id in the tag */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <!-- for the map to display, we reserve a spot for it. id is same as the id in css -->
+    <div id="map"></div>
+    <script>
+        var map;
+        function initMap() {
+            // zoom level 10 corresponds to city level
+            // Map is the js class
+            // when creating the object, we specify the html element in the page as the container 
+            // for the object. 
+            // All HTML nodes are children of the JS `document' object
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 40.800475, lng: -73.963903 },
+                zoom: 13
+            });
+        }
+    </script>
+    <!-- the api key can be made public here as it is browser key api and is 
+    supposed to be put on the client side -->
+    <!-- the url is the location of the javascript file. Async defer tells it to load the rest of page while this loads -->
+    <!-- when the api is ready, it will call the function specified in callback -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW9W9JXBhTJ4pusq6pBNMBom2lXUQsYzc&callback=initMap&libraries=geometry,places"
+        async defer></script>
+</body>
+
+
+</html>
