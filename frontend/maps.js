@@ -18,6 +18,8 @@ function initMap() {
     // div element which has absolute position on the map
     // specify the location where the search box should be added and push it
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('search'));
+    //'places_changed' is a listner for SearchBox, gets triggered when the user selects a query, 
+    //getPlaces() used to get new places
     google.maps.event.addListener(searchBox, 'places_changed', function () {
         searchBox.set('map', null);
 
@@ -46,7 +48,7 @@ function initMap() {
         }
         map.fitBounds(bounds);
         searchBox.set('map', map);
-        map.setZoom(Math.min(map.getZoom(), 12));
+        map.setZoom(Math.min(map.getZoom(), 15));
 
     });
 }
