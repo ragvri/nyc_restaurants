@@ -4,7 +4,7 @@ servers:
   - description: Search restaurants with nyc inspection result
     url: https://virtserver.swaggerhub.com/poyuH/RestaurantInspection/1.0.0
 info:
-  description: Search restaurants with nyc inspection result
+  description: Search restaurants with nyc inspection result without user login/registration
   version: "1.0.0"
   title: Restaurant Inspection Results
   contact:
@@ -13,8 +13,6 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
 tags:
-  - name: admins
-    description: Secured Admin-only calls
   - name: developers
     description: Operations available to regular developers
 paths:
@@ -24,9 +22,7 @@ paths:
         - developers
       summary: searches restaurants
       operationId: searchRestaurants
-      description: |
-        By passing in the appropriate options, users can search for
-        available restaurants near the users
+      description: 'By passing in the appropriate options, users can search for available restaurants nearby'
       parameters:
         - in: query
           name: userLocation
@@ -39,17 +35,12 @@ paths:
           description: cuisine type
           required: false
           schema:
-            type: string
+            $ref: '#/components/schemas/CuisineType'
         - in: query
           name: hygieneGrade
           description: letter grade of the hygiene from NYC inspection results
           schema:
             $ref: '#/components/schemas/HygieneGrade'
-        - in: query
-          name: hygieneScore
-          description: number of sanitary violations from NYC inspection results (lower the better)
-          schema:
-            $ref: '#/components/schemas/HygieneScore'
         - in: query
           name: priceGrade
           description: letter grade of price based on Yelp 
@@ -70,57 +61,98 @@ paths:
         '200':
           description: restaurants matching the search criteria
           content:
-            application/json:
+            application/json: 
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RestaurantBrief'
+                $ref: '#/components/schemas/RestaurantArray'
         '400':
           description: bad input parameter
         '404':
           description: url not found
         '500':
           description: The server encountered an unexpected condition which prevented it from fulfilling the request.
-    post:
+  /{restaurantId}:  
+    get:
       tags:
-        - admins
-      summary: adds an inventory item
-      operationId: addInventory
-      description: Adds an item to the system
+        - developers
+      summary: get whole info for a restaurant
+      description: get whole info for a restaurant
+      operationId: getRestaurantInfo
+      parameters:
+        - in: path
+          name: restaurantId
+          description: id for the restaurant
+          required: true
+          schema:
+            $ref: '#/components/schemas/RestaurantId'
       responses:
-        '201':
-          description: item created
+        '200':
+          description: restaurant's info
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/RestaurantInfo'
         '400':
-          description: 'invalid input, object invalid'
-        '409':
-          description: an existing item already exists
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RestaurantBrief'
-        description: Inventory item to add
+          description: bad input parameter
+        '404':
+          description: url not found
+        '500':
+          description: The server encountered an unexpected condition which prevented it from fulfilling the request.
+
 components:
   schemas:
+    RestaurantInfo:
+      description: whole info for the restaurant
+      type: object
+      properties:
+        address: 
+          $ref: '#/components/schemas/Address'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        name:
+          $ref: '#/components/schemas/NameOfRestaurant'
+        location:
+          $ref: '#/components/schemas/Location'
+        hygieneGrade:
+          $ref: '#/components/schemas/HygieneGrade'
+        priceGrade:
+          $ref: '#/components/schemas/PriceGrade'  
+        comments:
+          $ref: '#/components/schemas/Comments' 
+    RestaurantId:
+      description: id of each restaurant
+      type: string
+    RestaurantArray:
+      description: array of briefs
+      type: array
+      items:
+        $ref: '#/components/schemas/RestaurantBrief'
     RestaurantBrief:
       description: brief information of the restaurants
       type: object
       required:
+        - restaurantId
         - phone
         - name
         - location
       properties:
+        restaurantId:
+          $ref: '#/components/schemas/RestaurantId'
+        cuisine: 
+          $ref: '#/components/schemas/CuisineType'
+        address: 
+          $ref: '#/components/schemas/Address'
         phone:
           $ref: '#/components/schemas/PhoneNumber'
         name:
-          type: string
-          description: name of the restaurant
+          $ref: '#/components/schemas/NameOfRestaurant'
         location:
           $ref: '#/components/schemas/Location'
         hygieneGrade:
           $ref: '#/components/schemas/HygieneGrade'
         priceGrade:
           $ref: '#/components/schemas/PriceGrade'
+    Address:
+      type: string
     Location:
       type: object
       required:
@@ -134,19 +166,13 @@ components:
           type: number
           example: 14.1234
     HygieneGrade:
+      description: ' An inspection score of 0-13 is an A, 14-27 points is a B, and 28 or more points is a C'
       type: string
       enum:
         - A
         - B
         - C
       default: A
-    HygieneScore:
-      description: 'number of sanitary violations from NYC inspection results (lower the better)'
-      type: string
-      enum:
-        - '0-13'
-        - '14-27'
-        - '>=28'
     PriceGrade:
       type: string
       enum:
@@ -154,6 +180,7 @@ components:
         - $$
         - $$$
         - $$$$
+      example: '$'
     Distance:
       description: 'distance in meters'
       type: number
@@ -164,3 +191,14 @@ components:
       type: string
       pattern: '^\d{10}$'
       example: '9298887777'
+    CuisineType:
+      type: string
+      example: 'Taiwanese'
+    NameOfRestaurant:
+      type: string
+      description: name of the restaurant
+      example: Papa john's
+    Comments:
+      type: array
+      items:
+        type: string
