@@ -1,0 +1,21 @@
+/* Always set the map height explicitly to define the size of the div
+* element that contains the map. */
+/* hashtag defines the style for one element specified by id in the tag */
+#map{
+    height: 100%;
+}
+
+/* #map, #search_div{
+    grid-area: 1/1;
+} */
+/* Optional: Makes the sample page fill the window. */
+html,
+body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+search{
+    width: 300px;
+}

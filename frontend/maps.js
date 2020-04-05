@@ -1,4 +1,7 @@
 var map;
+var markers = new Array();
+
+
 function initMap() {
     // zoom level 10 corresponds to city level
     // Map is the js class
@@ -8,48 +11,139 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 40.800475, lng: -73.963903 },
         zoom: 13,
+        mapTypeControl: false,
+        styles: [
+            { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+            { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+            { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+            {
+                featureType: 'administrative.locality',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#d59563' }]
+            },
+            {
+                featureType: 'poi',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#d59563' }]
+            },
+            {
+                featureType: 'poi.park',
+                elementType: 'geometry',
+                stylers: [{ color: '#263c3f' }]
+            },
+            {
+                featureType: 'poi.park',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#6b9a76' }]
+            },
+            {
+                featureType: 'road',
+                elementType: 'geometry',
+                stylers: [{ color: '#38414e' }]
+            },
+            {
+                featureType: 'road',
+                elementType: 'geometry.stroke',
+                stylers: [{ color: '#212a37' }]
+            },
+            {
+                featureType: 'road',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#9ca5b3' }]
+            },
+            {
+                featureType: 'road.highway',
+                elementType: 'geometry',
+                stylers: [{ color: '#746855' }]
+            },
+            {
+                featureType: 'road.highway',
+                elementType: 'geometry.stroke',
+                stylers: [{ color: '#1f2835' }]
+            },
+            {
+                featureType: 'road.highway',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#f3d19c' }]
+            },
+            {
+                featureType: 'transit',
+                elementType: 'geometry',
+                stylers: [{ color: '#2f3948' }]
+            },
+            {
+                featureType: 'transit.station',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#d59563' }]
+            },
+            {
+                featureType: 'water',
+                elementType: 'geometry',
+                stylers: [{ color: '#17263c' }]
+            },
+            {
+                featureType: 'water',
+                elementType: 'labels.text.fill',
+                stylers: [{ color: '#515c6d' }]
+            },
+            {
+                featureType: 'water',
+                elementType: 'labels.text.stroke',
+                stylers: [{ color: '#17263c' }]
+            }
+        ]
     });
 
-
-    // search box in maps
-    var searchBox;
-    searchBox = new google.maps.places.SearchBox(document.getElementById('search'));
-    //Controls are stationary widgets which float on top of a map at absolute positions. It is just a 
-    // div element which has absolute position on the map
-    // specify the location where the search box should be added and push it
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(document.getElementById('search'));
-    //'places_changed' is a listner for SearchBox, gets triggered when the user selects a query, 
-    //getPlaces() used to get new places
-    google.maps.event.addListener(searchBox, 'places_changed', function () {
-        searchBox.set('map', null);
+    function getContent(id) {
+        // function to put content at the marker location
+        var string = "HELLO"
+        console.log(id);
+        return string + id
+    };
 
 
-        var places = searchBox.getPlaces();
-
-        var bounds = new google.maps.LatLngBounds();
-        var i, place;
-        for (i = 0; place = places[i]; i++) {
-            (function (place) {
+    document.getElementById('search').addEventListener('keyup', (event) => {
+        event.preventDefault();
+        // enter has keycode 13
+        if (event.keyCode == 13) {
+            google.maps.Map.prototype.clearMarkers = function () {
+                for (var i = 0; i < this.markers.length; ++i) {
+                    markers[i].setMap(null);
+                }
+                markers = new Array();
+            }
+            // get latitude and lognitude of the search option
+            var results;
+            results = [[40.800475, -73.963903], [41.800475, -72.963903]];
+            var query = document.getElementById('search').value;
+            // results = getAns(query)
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < results.length; ++i) {
+                var lat = results[i][0];
+                var long = results[i][1];
+                console.log(lat);
+                console.log(long);
                 var marker = new google.maps.Marker({
-
-                    position: place.geometry.location
+                    position: { lat: lat, lng: long },
+                    map: map,
+                    title: 'click to zoom',
+                }
+                );
+                // hardcoded
+                marker.set("id", String(i));
+                // var id = marker.get("id")
+                console.log(marker.get("id"))
+                marker.info = new google.maps.InfoWindow({ content: getContent(marker.get("id")) });
+                google.maps.event.addListener(marker, 'click', function () {
+                    this.info.open(map, this);
                 });
-                marker.bindTo('map', searchBox, 'map');
-                google.maps.event.addListener(marker, 'map_changed', function () {
-                    if (!this.getMap()) {
-                        this.unbindAll();
-                    }
-                });
-                bounds.extend(place.geometry.location);
+                marker.setMap(map);
+                markers.push(marker);
 
-
-            }(place));
-
+                bounds.extend(marker.getPosition());
+            }
+            map.setCenter(bounds.getCenter());
+            map.fitBounds(bounds);
         }
-        map.fitBounds(bounds);
-        searchBox.set('map', map);
-        map.setZoom(Math.min(map.getZoom(), 15));
-
     });
 }
-google.maps.event.addDomListener(window, 'load', init);
