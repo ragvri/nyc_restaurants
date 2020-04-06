@@ -25,11 +25,17 @@ paths:
       description: 'By passing in the appropriate options, users can search for available restaurants nearby'
       parameters:
         - in: query
-          name: userLocation
-          description: longitude and latitude of the user location
+          name: longitude
+          description: longitude of the user location
           required: true
           schema:
-            $ref: '#/components/schemas/Location'
+            $ref: '#/components/schemas/Longitude'
+        - in: query
+          name: latitude
+          description: latitude of the user location
+          required: true
+          schema:
+            $ref: '#/components/schemas/Latitude'
         - in: query
           name: cuisine
           description: cuisine type
@@ -110,8 +116,10 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         name:
           $ref: '#/components/schemas/NameOfRestaurant'
-        location:
-          $ref: '#/components/schemas/Location'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
         hygieneGrade:
           $ref: '#/components/schemas/HygieneGrade'
         priceGrade:
@@ -133,7 +141,8 @@ components:
         - restaurantId
         - phone
         - name
-        - location
+        - longitude
+        - latitude
       properties:
         restaurantId:
           $ref: '#/components/schemas/RestaurantId'
@@ -145,26 +154,22 @@ components:
           $ref: '#/components/schemas/PhoneNumber'
         name:
           $ref: '#/components/schemas/NameOfRestaurant'
-        location:
-          $ref: '#/components/schemas/Location'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
         hygieneGrade:
           $ref: '#/components/schemas/HygieneGrade'
         priceGrade:
           $ref: '#/components/schemas/PriceGrade'
     Address:
       type: string
-    Location:
-      type: object
-      required:
-      - longitude
-      - latitude
-      properties:
-        longitude:
-          type: number
-          example: 154.1234
-        latitude:
-          type: number
-          example: 14.1234
+    Longitude:
+      type: number
+      example: 154.1234
+    Latitude:
+      type: number
+      example: 14.1234
     HygieneGrade:
       description: ' An inspection score of 0-13 is an A, 14-27 points is a B, and 28 or more points is a C'
       type: string
