@@ -17,7 +17,7 @@ def update_restaurants(restaurants, new_rest):
     restaurants.append(new_rest)
     return restaurants
 
-def info2json(restaurants):
-    with open('ESinfo.json', 'w') as f:
+def info2json(restaurants, filename=''):
+    with open('ESinfo-{}.json'.format(filename), 'w') as f:
         for row in restaurants:
             json.dump(row, f)
