@@ -37,11 +37,12 @@ def get_unique_phones(boro=None, limit=10, offset=0):
 
 def get_review(phone, limit=10, offset=0):
     return get(**{'phone': phone, "$limit": limit, '$offset': offset,
-               '$order': 'inspection_date'})
+               '$order': 'inspection_date DESC'})
 
 if __name__ == '__main__':
-    l = get_unique_phones()
-    for i in l:
-        l2 = get_review(i['phone'])
-        for j in l2:
-            print(j.get('violation_description'))
+    phones = get_unique_phones(boro='Manhattan', offset = 0, limit=10000)
+    count = 0
+    while phones:
+        count += len(phones)
+        phones = get_unique_phones(boro='Manhattan', limit=10000, offset=count)
+    print(count)
