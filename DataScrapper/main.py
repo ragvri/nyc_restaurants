@@ -14,15 +14,15 @@ def populate_aws(es_info, limit=1, offset=0, boro='Manhattan'):
     for phone in phones:
         phone = phone['phone']
         reviews = nycopen.get_review(phone, limit=1)
-        info_list = yelp.get_info(phone)
+        yelp_list = yelp.get_info(phone)
         mapping = {}
         if info_list:
-            for key in reviews[0]:
-                if key in requried_col:
-                    mapping[key] = reviews[0].get(key)
-            for key in info_list[0]:
-                if key in requried_col:
-                    mapping[key] = info_list[0].get(key)
+            mapping.update(reviews[0])
+            mapping.update(yelp_list[0])
+            for key in list(mapping.keys()):
+                if key not in requried_col:
+                    mapping.pop(key)
+
             if mapping['categories']:
                 temp = []
                 for cat in mapping['categories']:
@@ -33,10 +33,17 @@ def populate_aws(es_info, limit=1, offset=0, boro='Manhattan'):
                 mapping['address'] = mapping.get('location').get('display_address')
             mapping.pop('location')
 
+            if mapping.get('longitude') and mapping.get('latitude'):
+                mapping['longitude'] = Decimal(mapping.get('longitude'))
+                mapping['latitude'] = Decimal(mapping.get('latitude'))
+            else:
+                break
             mapping['latitude'] = Decimal(mapping['latitude'])
             mapping['longitude'] = Decimal(mapping['longitude'])
-            mapping['rating'] = Decimal(mapping['rating'])
-            mapping['score'] = int(mapping['score'])
+            if mapping.get('rating'):
+                mapping['rating'] = Decimal(mapping.get('rating'))
+            if mapping.get('score'):
+                mapping['score'] = int(mapping.get('score'))
 
             db_handler.add_item(mapping)
             es_handler.update_restaurants(es_info, mapping)
