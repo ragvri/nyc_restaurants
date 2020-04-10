@@ -55,7 +55,8 @@ def populate_aws(es_info, limit=1, offset=0, boro='Manhattan'):
     return es_info
 
 if __name__ == '__main__':
-    offset = 0
-    for i in range(4):
-        es_info = populate_aws([], limit=1000, offset=i*1000)
+    """total amount of restaurants in Manhattan in nyc open data is 10049"""
+    for i in range(0, 120):
+        es_info = populate_aws([], limit=100, offset=i*100)
         es_handler.info2json(es_info, filename=str(i))
+        print('finish downloading part', i)
