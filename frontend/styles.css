@@ -71,15 +71,25 @@ search{
 .container, #map{
   grid-area: 1/1;
 } */
-.container
+.container{
+  height: 100%;
+  width: 100%;
+}
+
 .search_container{
   position: absolute;
-  z-index: 9999;
+  z-index: 99999;
   height: 100px;
   width: 100px;
+  left: 10px;
+  top: 10px;
+}
+#search_price{
+  position:relative ;
+  margin: 5px;
 }
 #map{
   height: 100%;
-  z-index:99999 ;
-  position: absolute;
+  z-index:0 ;
+  position: relative;
 }
