@@ -23,6 +23,7 @@ def get(**kwargs):
     # proceed only if the status code is 200
     if req.status_code != 200:
         print('The status code is {}, please try again.'.format(req.status_code))
+        print('nycopen', req.headers)
         return []
     # printing the text from the response
     result = json.loads(req.text)

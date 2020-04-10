@@ -7,6 +7,11 @@ def add_item(mapping, table_name="nyc_restaurant_inspection"):
     will overwrite if the item exist
     """
     table = resource('dynamodb').Table(table_name)
-    response = table.put_item(Item=mapping)
-    return response
+    try:
+        response = table.put_item(Item=mapping)
+        return response
+    except Exception as e:
+        print(e)
+        print(mapping)
+        return []
 

@@ -16,6 +16,9 @@ def get_info(phone, locale='en_US'):
         return []
     # printing the text from the response
     result = json.loads(req.text)
+    remaining = req.headers.get('RateLimit-Remaining')
+    if remaining and int(remaining) % 100 == 0:
+        print('remaining limit', remaining)
     return (result['businesses'])
 
 if __name__ == '__main__':

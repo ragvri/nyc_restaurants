@@ -16,7 +16,7 @@ def populate_aws(es_info, limit=1, offset=0, boro='Manhattan'):
         reviews = nycopen.get_review(phone, limit=1)
         yelp_list = yelp.get_info(phone)
         mapping = {}
-        if info_list:
+        if yelp_list:
             mapping.update(reviews[0])
             mapping.update(yelp_list[0])
             for key in list(mapping.keys()):
@@ -44,6 +44,11 @@ def populate_aws(es_info, limit=1, offset=0, boro='Manhattan'):
                 mapping['rating'] = Decimal(mapping.get('rating'))
             if mapping.get('score'):
                 mapping['score'] = int(mapping.get('score'))
+
+            # deal with aws ValidationException when encounter empty string
+            for key in mapping:
+                if not mapping[key]:
+                    mapping[key] = None
 
             db_handler.add_item(mapping)
             es_handler.update_restaurants(es_info, mapping)
