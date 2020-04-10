@@ -10,21 +10,10 @@
     <meta name='viewport' content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel='stylesheet' type='text/css' href='styles.css'>
-    <!-- a css contains key, value. In our case, we want to give the following
-    style to html and body -->
-    <!-- This CSS declaration indicates that the map container <div> (with id map)
-     should take up 100% of the height of the HTML body.  -->
-    <!-- When we specify height or width as percentage, its wrt parent. For 
-         width, all block are as wide as parents. But height of a block depends 
-        on its content unless we specify the height explicitly of the parent as well
-    -->
 </head>
 
 <body>
-    <!-- for the map to display, we reserve a spot for it. id is same as the id in css -->
     <div class="container">
-        <!-- <button type="submit" onclick="showDiv()"><img src="./images/search_logo.png"></button> -->
-        <!-- <div class='search_container' style="display:none" id="search_container"> -->
         <div class='search_container'>
             <div id='search_box'>
                 <input id="search" type="text" placeholder="Search Box" class="search">
@@ -46,8 +35,6 @@
         </div>
         <div id="map"> </div>
     </div>
-    </div>
-    </div>
     <script type="text/javascript" src="maps.js"> </script>
     <!-- the api key can be made public here as it is browser key api and is 
     supposed to be put on the client side -->
@@ -60,7 +47,3 @@
 
 
 </html>
-
-<!-- 
-    1) change the search box UI
- -->

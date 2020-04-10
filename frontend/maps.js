@@ -163,11 +163,3 @@ checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
 
 
 }
-
-items.onblur = function (evt) {
-    items.classList.remove('visible');
-}
-
-function showDiv() {
-    document.getElementById('search_container').style.display = "block";
-}
