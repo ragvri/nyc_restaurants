@@ -18,12 +18,30 @@
          width, all block are as wide as parents. But height of a block depends 
         on its content unless we specify the height explicitly of the parent as well
     -->
-
 </head>
 
 <body>
     <!-- for the map to display, we reserve a spot for it. id is same as the id in css -->
-    <input id="search" type="text" placeholder="Search Box" class="search">
+    <div class='search_container'>
+        <div class="parent flex-parent">
+            <div class="child flex-child">
+                <div id='search_box'>
+                    <input id="search" type="text" placeholder="Search Box" class="search">
+                </div>
+            </div>
+            <div class="child flex-child">
+                <div id="search_price" class="dropdown-check-list" tabindex="100">
+                    <span class="anchor">Select Price</span>
+                    <ul id="items" class="items">
+                        <li><input type="checkbox" checked />Any </li>
+                        <li><input type="checkbox" />$$$</li>
+                        <li><input type="checkbox" />$$ </li>
+                        <li><input type="checkbox" />$ </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="map"> </div>
     <script type="text/javascript" src="maps.js"> </script>
     <!-- the api key can be made public here as it is browser key api and is 

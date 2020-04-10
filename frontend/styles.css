@@ -5,9 +5,6 @@
     height: 100%;
 }
 
-/* #map, #search_div{
-    grid-area: 1/1;
-} */
 /* Optional: Makes the sample page fill the window. */
 html,
 body{
@@ -19,3 +16,59 @@ body{
 search{
     width: 300px;
 }
+
+.dropdown-check-list {
+  display: inline-block;
+}
+.dropdown-check-list .anchor {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  padding: 5px 50px 5px 10px;
+  border: 1px solid #ccc;
+}
+.dropdown-check-list .anchor:after {
+  position: absolute;
+  content: "";
+  border-left: 2px solid black;
+  border-top: 2px solid black;
+  padding: 5px;
+  right: 10px;
+  top: 20%;
+  -moz-transform: rotate(-135deg);
+  -ms-transform: rotate(-135deg);
+  -o-transform: rotate(-135deg);
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+.dropdown-check-list .anchor:active:after {
+  right: 8px;
+  top: 21%;
+}
+.dropdown-check-list ul.items {
+  padding: 2px;
+  display: none;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+.dropdown-check-list ul.items li {
+  list-style: none;
+}
+
+.flex-parent{
+    display: flex;
+}
+.flex-child{
+    display: flex1;
+}
+
+/* .container{
+  display: grid;
+  height: 100%;
+  width: 100%;
+}
+
+.container, #map{
+  grid-area: 1/1;
+} */
