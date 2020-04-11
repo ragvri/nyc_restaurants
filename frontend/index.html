@@ -8,8 +8,9 @@
     </title>
     <meta name='viewport' content="initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel='stylesheet' type='text/css' href='styles.css'>
-    <script type="text/javascript" src="./script.js"></script>
+    <link rel='stylesheet' type='text/css' href='./css/styles.css'>
+    <link rel="stylesheet" type="text/css" href="./css/slider.css">
+    <script type="text/javascript" src="./js/sidebar.js"></script>
 </head>
 
 <body>
@@ -34,11 +35,25 @@
                     <font color="white"> $ </font>
                 </label>
             </div>
+            <div class="distanceSlideContainer">
+                <p style="color:white; margin-left: 10px;">Distance: <span id="distanceValue"></span> km</p>
+                <input type="range" min="1" max="10" value="5" class="slider" step="0.1" id="distanceRange">
+            </div>
+            <script>
+                var slider = document.getElementById("distanceRange");
+                var output = document.getElementById("distanceValue");
+                output.innerHTML = slider.value;
+
+                slider.oninput = function () {
+                    output.innerHTML = this.value;
+                }
+            </script>
+
         </div>
     </div>
     <button class="openbtn" onclick="openNav()">&#9776; Search</button>
     <div id="map"> </div>
-    <script type="text/javascript" src="maps.js"> </script>
+    <script type="text/javascript" src="./js/maps.js"> </script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW9W9JXBhTJ4pusq6pBNMBom2lXUQsYzc&callback=initMap&libraries=places,geometry"
         async defer></script>
