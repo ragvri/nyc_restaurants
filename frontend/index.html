@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- using html5 "standards" mode. "quirks" mode is the old rule  -->
 <html>
 <script type="text/javascript" src='keys.js'></script>
 
@@ -10,21 +9,13 @@
     <meta name='viewport' content="initial-scale=1.0">
     <meta charset="utf-8">
     <link rel='stylesheet' type='text/css' href='styles.css'>
-    <!-- a css contains key, value. In our case, we want to give the following
-    style to html and body -->
-    <!-- This CSS declaration indicates that the map container <div> (with id map)
-     should take up 100% of the height of the HTML body.  -->
-    <!-- When we specify height or width as percentage, its wrt parent. For 
-         width, all block are as wide as parents. But height of a block depends 
-        on its content unless we specify the height explicitly of the parent as well
-    -->
+    <script type="text/javascript" src="./script.js"></script>
 </head>
 
 <body>
-    <!-- for the map to display, we reserve a spot for it. id is same as the id in css -->
-    <div class="container">
-        <!-- <button type="submit" onclick="showDiv()"><img src="./images/search_logo.png"></button> -->
-        <!-- <div class='search_container' style="display:none" id="search_container"> -->
+    <!-- <div class="container"> -->
+    <div id="searchSideBar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <div class='search_container'>
             <div id='search_box'>
                 <input id="search" type="text" placeholder="Search Box" class="search">
@@ -44,23 +35,11 @@
                 </label>
             </div>
         </div>
-        <div id="map"> </div>
     </div>
-    </div>
-    </div>
+    <button class="openbtn" onclick="openNav()">&#9776; Search</button>
+    <div id="map"> </div>
     <script type="text/javascript" src="maps.js"> </script>
-    <!-- the api key can be made public here as it is browser key api and is 
-    supposed to be put on the client side -->
-    <!-- the url is the location of the javascript file. Async defer tells it to load the rest of page while this loads -->
-    <!-- when the api is ready, it will call the function specified in callback -->
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDW9W9JXBhTJ4pusq6pBNMBom2lXUQsYzc&callback=initMap&libraries=places,geometry"
         async defer></script>
 </body>
-
-
-</html>
-
-<!-- 
-    1) change the search box UI
- -->

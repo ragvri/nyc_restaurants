@@ -106,6 +106,7 @@ function initMap() {
         event.preventDefault();
         // enter has keycode 13
         if (event.keyCode == 13) {
+            document.getElementById('searchSideBar').style.width = 0;
             google.maps.Map.prototype.clearMarkers = function () {
                 for (var i = 0; i < this.markers.length; ++i) {
                     markers[i].setMap(null);
@@ -144,30 +145,8 @@ function initMap() {
             }
             map.setCenter(bounds.getCenter());
             map.fitBounds(bounds);
+
         }
     });
 }
 
-var checkList = document.getElementById('search_price');
-var items = document.getElementById('items');
-checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
-    if (items.classList.contains('visible')) {
-        items.classList.remove('visible');
-        items.style.display = "none";
-    }
-
-    else {
-        items.classList.add('visible');
-        items.style.display = "block";
-    }
-
-
-}
-
-items.onblur = function (evt) {
-    items.classList.remove('visible');
-}
-
-function showDiv() {
-    document.getElementById('search_container').style.display = "block";
-}
