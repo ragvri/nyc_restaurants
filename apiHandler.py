@@ -1,5 +1,27 @@
 import boto3
 import json
+from botocore.vendored import requests
+from aws_requests_auth.aws_auth import AWSRequestsAuth
+
+print('Loading function')
+dynamo = boto3.client('dynamodb')
+
+session = boto3.session.Session()
+credentials = session.get_credentials()
+es_host = 'search-nyc-restaurants-inspection-oksmivk4fqfcwxeprrwjvp32ii.us-east-1.es.amazonaws.com'
+aws_auth = AWSRequestsAuth(
+    aws_access_key=credentials.access_key,
+    aws_secret_access_key=credentials.secret_key,
+    aws_token=credentials.token,
+    aws_host=es_host,
+    aws_region=session.region_name,
+    aws_service='es'
+)
+# access ES example
+"""
+req = requests.get('https://search-nyc-restaurants-inspection-oksmivk4fqfcwxeprrwjvp32ii.us-east-1.es.amazonaws.com/_search', auth=aws_auth)
+print(json.loads(req.text))
+"""
 
 print('Loading function')
 dynamo = boto3.client('dynamodb')
