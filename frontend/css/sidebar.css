@@ -10,13 +10,13 @@ body{
 }
 
 .sidebar {
-  height: 30%; 
+  height: 70%; 
   width: 0; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
   z-index: 99999; /* Stay on top */
   top: 0px;
   left: 0;
-  background-color: rgb(114, 47, 8); 
+  background-color: rgb(245, 119, 1); 
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
@@ -48,7 +48,7 @@ body{
 .openbtn {
   font-size: 15px;
   cursor: pointer;
-  background-color: rgb(114, 47, 8);
+  background-color: rgb(245, 119, 1);
   color: white;
   padding: 7px 15px;
   border: none;

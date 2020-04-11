@@ -8,7 +8,7 @@
     </title>
     <meta name='viewport' content="initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel='stylesheet' type='text/css' href='./css/styles.css'>
+    <link rel='stylesheet' type='text/css' href='./css/sidebar.css'>
     <link rel="stylesheet" type="text/css" href="./css/slider.css">
     <script type="text/javascript" src="./js/sidebar.js"></script>
 </head>
@@ -22,18 +22,34 @@
                 <input id="search" type="text" placeholder="Search Box" class="search">
             </div>
             <div id="search_price">
-                <input type="checkbox" id="$$$">
-                <label for="$$$">
-                    <font color="white"> $$$ </font>
-                </label></br>
-                <input type="checkbox" id="$$">
-                <label for="$$">
-                    <font color="white"> $$ </font>
-                </label></br>
-                <input type="checkbox" id="$">
-                <label for="$">
-                    <font color="white"> $ </font>
-                </label>
+                </br>
+                <label for="searchPrice" style="color: white; margin-left: 10px;">Price:</label>
+                <select id="searchPrice">
+                    <option value=">=$"> >=$</option>
+                    <option value=">=$$"> >=$$</option>
+                    <option value=">=$$$">>=$$$</option>
+                    <option value="=$$$$">=$$$$</option>
+                </select>
+            </div>
+            <div id="health_grade">
+                </br>
+                <label for="heatlhGrade" style="color: white; margin-left: 10px;">Health Grade:</label>
+                <select id="healthGrade">
+                    <option value=">=C"> >=C</option>
+                    <option value=">=B"> >=B</option>
+                    <option value=">=A">>=A</option>
+                </select>
+            </div>
+            <div id="rating">
+                </br>
+                <label for="rating" style="color: white; margin-left: 10px;">Rating:</label>
+                <select id="rating">
+                    <option value=">=1"> >=1</option>
+                    <option value=">=2"> >=2</option>
+                    <option value=">=3">>=3</option>
+                    <option value=">=4">>=4</option>
+                    <option value="=5">=5</option>
+                </select>
             </div>
             <div class="distanceSlideContainer">
                 <p style="color:white; margin-left: 10px;">Distance: <span id="distanceValue"></span> km</p>
@@ -48,6 +64,36 @@
                     output.innerHTML = this.value;
                 }
             </script>
+            </br>
+            <div id="cuisineType">
+                <p style="color: white; margin-left: 10px;">Cusine Type:</p>
+                <div class="cusineOptions">
+                    <input type="checkbox" id="indian">
+                    <label for="Indian">
+                        <font color="white"> Indian </font>
+                    </label></br>
+                    <input type="checkbox" id="Chinese">
+                    <label for="Chinese">
+                        <font color="white"> Chinese </font>
+                    </label></br>
+                    <input type="checkbox" id="Mexican">
+                    <label for="Mexican">
+                        <font color="white"> Mexican </font>
+                    </label></br>
+                    <input type="checkbox" id="Italian">
+                    <label for="Italian">
+                        <font color="white"> Italian</font>
+                    </label></br>
+                    <input type="checkbox" id="Thai">
+                    <label for="Thai">
+                        <font color="white"> Thai</font>
+                    </label></br>
+                    <input type="checkbox" id="French">
+                    <label for="French">
+                        <font color="white"> French</font>
+                    </label></br>
+                </div>
+            </div>
 
         </div>
     </div>

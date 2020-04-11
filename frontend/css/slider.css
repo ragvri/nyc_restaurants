@@ -4,7 +4,7 @@
 
 .slider {
   -webkit-appearance: none;
-  margin: auto;
+  margin-bottom: 2px;
   width: 90%;
   height: 10px;
   border-radius: 3px;
@@ -13,6 +13,7 @@
   opacity: 0.7;
   -webkit-transition: .2s;
   transition: opacity .2s;
+  box-shadow: 10px, 10px white;
 }
 
 .slider:hover {
@@ -23,9 +24,11 @@
   -webkit-appearance: none;
   appearance: none;
   width: 15px;
+  margin-bottom: 2px;
   height: 15px;
   border-radius: 50%;
-  background: rgb(205, 226, 11);
+  box-shadow: 10px, 10px white;
+  background: rgb(36, 226, 11);
   cursor: pointer;
 }
 
@@ -33,6 +36,12 @@
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background: rgb(205, 226, 11);
+  margin-bottom: 2px;
+  background: rgb(36, 226, 11);
+  box-shadow: 10px, 10px white;
   cursor: pointer;
+}
+.cusineOptions{
+    margin-left: 10px;
+    top: 0;
 }
