@@ -106,7 +106,7 @@ function getContent(id) {
 var geoFound = new Event('geoFound', { "bubbles": true, "cancelable": true })
 geoFound.location = null;
 
-document.getElementById('search').addEventListener('keyup', keyPress => {
+document.addEventListener('keyup', keyPress => {
     keyPress.preventDefault();
     // enter has keycode 13
     if (keyPress.keyCode == 13) {
@@ -121,14 +121,29 @@ document.getElementById('search').addEventListener('keyup', keyPress => {
         // get user location
         document.addEventListener("geoFound", e => {
             console.log(e.location);
-            //get the search options from the frontend and pass it to the api. 
-            // Next get the results from the API. 
 
-            // get latitude and longitude of the search option
-            var query = document.getElementById('search').value;
+            var searchTerm = document.getElementById('search').value;
+            var searchPrice = $("#searchPrice :selected").val();
+            var healthGrade = $("#healthGrade :selected").val();
+            var rating = $("#rating :selected").val();
+            var distance = $("#distanceRange").val();
+            var cuisineTypes = [];
+            $('#cuisineType input:checked').each(function () {
+                cuisineTypes.push($(this).attr('value'));
+            });
+            var isCuisineSelected = false;
+            if (cuisineTypes.length > 0) {
+                isCuisineSelected = true;
+            }
+            console.log('is cuisine selected? ' + isCuisineSelected);
+            console.log('cuisine types is ' + cuisineTypes);
+            console.log('health grade is ' + healthGrade);
+            console.log('rating is ' + rating);
+            console.log('distance is ' + distance);
+
             var results;
             results = [e.location, [41.800475, -72.963903]];
-            // results = getAns(query)
+            // results = getAns(searchTerm)
 
             var bounds = new google.maps.LatLngBounds();
             for (var i = 0; i < results.length; ++i) {
