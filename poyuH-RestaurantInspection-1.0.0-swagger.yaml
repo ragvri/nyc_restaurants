@@ -1,0 +1,209 @@
+openapi: 3.0.0
+# Added by API Auto Mocking Plugin
+servers:
+  - description: Search restaurants with nyc inspection result
+    url: https://virtserver.swaggerhub.com/poyuH/RestaurantInspection/1.0.0
+info:
+  description: Search restaurants with nyc inspection result without user login/registration
+  version: "1.0.0"
+  title: Restaurant Inspection Results
+  contact:
+    email: po-yu.huang@columbia.edu
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: developers
+    description: Operations available to regular developers
+paths:
+  /restaurants:
+    get:
+      tags:
+        - developers
+      summary: searches restaurants
+      operationId: searchRestaurants
+      description: 'By passing in the appropriate options, users can search for available restaurants nearby'
+      parameters:
+        - in: query
+          name: longitude
+          description: longitude of the user location
+          required: true
+          schema:
+            $ref: '#/components/schemas/Longitude'
+        - in: query
+          name: latitude
+          description: latitude of the user location
+          required: true
+          schema:
+            $ref: '#/components/schemas/Latitude'
+        - in: query
+          name: cuisine
+          description: cuisine type
+          required: false
+          schema:
+            $ref: '#/components/schemas/CuisineType'
+        - in: query
+          name: hygieneGrade
+          description: letter grade of the hygiene from NYC inspection results
+          schema:
+            $ref: '#/components/schemas/HygieneGrade'
+        - in: query
+          name: priceGrade
+          description: letter grade of price based on Yelp 
+          schema:
+            $ref: '#/components/schemas/PriceGrade'
+        - in: query
+          name: restaurantName
+          description: name of the restaurant
+          required: false
+          schema:
+            type: string
+        - in: query
+          name: distance
+          description: 'the search radius in meters'
+          schema:
+           $ref: '#/components/schemas/Distance'
+      responses:
+        '200':
+          description: restaurants matching the search criteria
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/RestaurantArray'
+        '400':
+          description: bad input parameter
+        '404':
+          description: url not found
+        '500':
+          description: The server encountered an unexpected condition which prevented it from fulfilling the request.
+  /{restaurantId}:  
+    get:
+      tags:
+        - developers
+      summary: get whole info for a restaurant
+      description: get whole info for a restaurant
+      operationId: getRestaurantInfo
+      parameters:
+        - in: path
+          name: restaurantId
+          description: id for the restaurant
+          required: true
+          schema:
+            $ref: '#/components/schemas/RestaurantId'
+      responses:
+        '200':
+          description: restaurant's info
+          content:
+            application/json: 
+              schema:
+                $ref: '#/components/schemas/RestaurantInfo'
+        '400':
+          description: bad input parameter
+        '404':
+          description: url not found
+        '500':
+          description: The server encountered an unexpected condition which prevented it from fulfilling the request.
+
+components:
+  schemas:
+    RestaurantInfo:
+      description: whole info for the restaurant
+      type: object
+      properties:
+        address: 
+          $ref: '#/components/schemas/Address'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        name:
+          $ref: '#/components/schemas/NameOfRestaurant'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        hygieneGrade:
+          $ref: '#/components/schemas/HygieneGrade'
+        priceGrade:
+          $ref: '#/components/schemas/PriceGrade'  
+        comments:
+          $ref: '#/components/schemas/Comments' 
+    RestaurantId:
+      description: id of each restaurant
+      type: string
+    RestaurantArray:
+      description: array of briefs
+      type: array
+      items:
+        $ref: '#/components/schemas/RestaurantBrief'
+    RestaurantBrief:
+      description: brief information of the restaurants
+      type: object
+      required:
+        - restaurantId
+        - phone
+        - name
+        - longitude
+        - latitude
+      properties:
+        restaurantId:
+          $ref: '#/components/schemas/RestaurantId'
+        cuisine: 
+          $ref: '#/components/schemas/CuisineType'
+        address: 
+          $ref: '#/components/schemas/Address'
+        phone:
+          $ref: '#/components/schemas/PhoneNumber'
+        name:
+          $ref: '#/components/schemas/NameOfRestaurant'
+        longitude:
+          $ref: '#/components/schemas/Longitude'
+        latitude:
+          $ref: '#/components/schemas/Latitude'
+        hygieneGrade:
+          $ref: '#/components/schemas/HygieneGrade'
+        priceGrade:
+          $ref: '#/components/schemas/PriceGrade'
+    Address:
+      type: string
+    Longitude:
+      type: number
+      example: 154.1234
+    Latitude:
+      type: number
+      example: 14.1234
+    HygieneGrade:
+      description: ' An inspection score of 0-13 is an A, 14-27 points is a B, and 28 or more points is a C'
+      type: string
+      enum:
+        - A
+        - B
+        - C
+      default: A
+    PriceGrade:
+      type: string
+      enum:
+        - $
+        - $$
+        - $$$
+        - $$$$
+      example: '$'
+    Distance:
+      description: 'distance in meters'
+      type: number
+      minimum: 100
+      maximum: 10000
+      default: 100
+    PhoneNumber:
+      type: string
+      pattern: '^\d{10}$'
+      example: '9298887777'
+    CuisineType:
+      type: string
+      example: 'Taiwanese'
+    NameOfRestaurant:
+      type: string
+      description: name of the restaurant
+      example: Papa john's
+    Comments:
+      type: array
+      items:
+        type: string
