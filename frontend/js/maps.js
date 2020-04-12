@@ -1,7 +1,5 @@
 var map;
 var markers = new Array();
-var user_lat;
-var user_long;
 
 
 function initMap() {
@@ -105,14 +103,13 @@ function getContent(id) {
     return string + id
 };
 
-var geoFound = document.createEvent("Event");
-geoFound.initEvent("geoFound", true, true);
+var geoFound = new Event('geoFound', { "bubbles": true, "cancelable": true })
 geoFound.location = null;
 
-document.getElementById('search').addEventListener('keyup', event => {
-    event.preventDefault();
+document.getElementById('search').addEventListener('keyup', keyPress => {
+    keyPress.preventDefault();
     // enter has keycode 13
-    if (event.keyCode == 13) {
+    if (keyPress.keyCode == 13) {
         document.getElementById('searchSideBar').style.width = 0;
         google.maps.Map.prototype.clearMarkers = function () {
             for (var i = 0; i < this.markers.length; ++i) {
@@ -122,52 +119,52 @@ document.getElementById('search').addEventListener('keyup', event => {
         }
         geoFindMe();
         // get user location
-        document.addEventListener("geoFound", myEventHandler, false);
-        function myEventHandler (event) {
-        console.log(event.location);
-        //get the search options from the frontend and pass it to the api. 
-        // Next get the results from the API. 
+        document.addEventListener("geoFound", e => {
+            console.log(e.location);
+            //get the search options from the frontend and pass it to the api. 
+            // Next get the results from the API. 
 
-        // get latitude and longitude of the search option
-        var results;
-        results = [event.location, [41.800475, -72.963903]];
-        var query = document.getElementById('search').value;
-        // results = getAns(query)
-        var bounds = new google.maps.LatLngBounds();
-        for (var i = 0; i < results.length; ++i) {
-            var lat = results[i][0];
-            var long = results[i][1];
-            console.log(lat);
-            console.log(long);
-            var marker = new google.maps.Marker({
-                position: { lat: lat, lng: long },
-                map: map,
-                title: 'click to zoom',
-            });
-            // hardcoded
-            marker.set("id", String(i));
-            // var id = marker.get("id")
-            // console.log(marker.get("id"))
-            marker.info = new google.maps.InfoWindow({ content: getContent(marker.get("id")) });
-            google.maps.event.addListener(marker, 'click', function () {
-                this.info.open(map, this);
-            });
-            marker.setMap(map);
-            markers.push(marker);
+            // get latitude and longitude of the search option
+            var query = document.getElementById('search').value;
+            var results;
+            results = [e.location, [41.800475, -72.963903]];
+            // results = getAns(query)
 
-            bounds.extend(marker.getPosition());
-        }
-        map.setCenter(bounds.getCenter());
-        map.fitBounds(bounds);
-        }
+            var bounds = new google.maps.LatLngBounds();
+            for (var i = 0; i < results.length; ++i) {
+                var lat = results[i][0];
+                var long = results[i][1];
+                // console.log(lat);
+                // console.log(long);
+                var marker = new google.maps.Marker({
+                    position: { lat: lat, lng: long },
+                    map: map,
+                    title: 'click to zoom',
+                });
+                // hardcoded
+                marker.set("id", String(i));
+                // var id = marker.get("id")
+                // console.log(marker.get("id"))
+                marker.info = new google.maps.InfoWindow({ content: getContent(marker.get("id")) });
+                google.maps.event.addListener(marker, 'click', function () {
+                    this.info.open(map, this);
+                });
+                marker.setMap(map);
+                markers.push(marker);
+
+                bounds.extend(marker.getPosition());
+            }
+            map.setCenter(bounds.getCenter());
+            map.fitBounds(bounds);
+        });
 
     }
 });
 
 
 function geoFindMe() {
-    var user_lat ;
-    var user_long ;
+    var user_lat;
+    var user_long;
     function success(position) {
         user_lat = position.coords.latitude;
         user_long = position.coords.longitude;
@@ -175,7 +172,7 @@ function geoFindMe() {
         document.dispatchEvent(geoFound);
     }
 
-   function error() {
+    function error() {
         user_lat = 40.807185;
         user_long = -73.961838;
         geoFound.location = [user_lat, user_long];
