@@ -1,5 +1,7 @@
 var map;
 var markers = new Array();
+var user_lat;
+var user_long;
 
 
 function initMap() {
@@ -94,59 +96,86 @@ function initMap() {
         ]
     });
 
-    function getContent(id) {
-        // function to put content at the marker location
-        var string = "HELLO"
-        console.log(id);
-        return string + id
-    };
 
 
-    document.getElementById('search').addEventListener('keyup', (event) => {
-        event.preventDefault();
-        // enter has keycode 13
-        if (event.keyCode == 13) {
-            document.getElementById('searchSideBar').style.width = 0;
-            google.maps.Map.prototype.clearMarkers = function () {
-                for (var i = 0; i < this.markers.length; ++i) {
-                    markers[i].setMap(null);
-                }
-                markers = new Array();
-            }
-            // get latitude and lognitude of the search option
-            var results;
-            results = [[40.800475, -73.963903], [41.800475, -72.963903]];
-            var query = document.getElementById('search').value;
-            // results = getAns(query)
-            var bounds = new google.maps.LatLngBounds();
-            for (var i = 0; i < results.length; ++i) {
-                var lat = results[i][0];
-                var long = results[i][1];
-                console.log(lat);
-                console.log(long);
-                var marker = new google.maps.Marker({
-                    position: { lat: lat, lng: long },
-                    map: map,
-                    title: 'click to zoom',
-                }
-                );
-                // hardcoded
-                marker.set("id", String(i));
-                // var id = marker.get("id")
-                console.log(marker.get("id"))
-                marker.info = new google.maps.InfoWindow({ content: getContent(marker.get("id")) });
-                google.maps.event.addListener(marker, 'click', function () {
-                    this.info.open(map, this);
-                });
-                marker.setMap(map);
-                markers.push(marker);
 
-                bounds.extend(marker.getPosition());
-            }
-            map.setCenter(bounds.getCenter());
-            map.fitBounds(bounds);
-
-        }
-    });
 }
 
+function getContent(id) {
+    // function to put content at the marker location
+    var string = "HELLO"
+    // console.log(id);
+    return string + id
+};
+
+document.getElementById('search').addEventListener('keyup', async (event) => {
+    event.preventDefault();
+    // enter has keycode 13
+    if (event.keyCode == 13) {
+        document.getElementById('searchSideBar').style.width = 0;
+        google.maps.Map.prototype.clearMarkers = function () {
+            for (var i = 0; i < this.markers.length; ++i) {
+                markers[i].setMap(null);
+            }
+            markers = new Array();
+        }
+        // get user location
+        await geoFindMe();
+        //get the search options from the frontend and pass it to the api. 
+        // Next get the results from the API. 
+
+        // get latitude and longitude of the search option
+        var results;
+        results = [[40.800475, -73.963903], [41.800475, -72.963903]];
+        var query = document.getElementById('search').value;
+        // results = getAns(query)
+        var bounds = new google.maps.LatLngBounds();
+        for (var i = 0; i < results.length; ++i) {
+            var lat = results[i][0];
+            var long = results[i][1];
+            // console.log(lat);
+            // console.log(long);
+            var marker = new google.maps.Marker({
+                position: { lat: lat, lng: long },
+                map: map,
+                title: 'click to zoom',
+            }
+            );
+            // hardcoded
+            marker.set("id", String(i));
+            // var id = marker.get("id")
+            // console.log(marker.get("id"))
+            marker.info = new google.maps.InfoWindow({ content: getContent(marker.get("id")) });
+            google.maps.event.addListener(marker, 'click', function () {
+                this.info.open(map, this);
+            });
+            marker.setMap(map);
+            markers.push(marker);
+
+            bounds.extend(marker.getPosition());
+        }
+        map.setCenter(bounds.getCenter());
+        map.fitBounds(bounds);
+
+    }
+});
+
+async function geoFindMe() {
+    async function success(position) {
+        user_lat = position.coords.latitude;
+        user_long = position.coords.longitude;
+    }
+
+    async function error() {
+        user_lat = 40.807185;
+        user_long = -73.961838;
+    }
+
+    if (!navigator.geolocation) {
+        user_lat = 40.807185;
+        user_long = -73.961838;
+    } else {
+        await navigator.geolocation.getCurrentPosition(success, error);
+    }
+
+}
